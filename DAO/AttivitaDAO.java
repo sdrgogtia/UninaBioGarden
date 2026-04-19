@@ -1,10 +1,10 @@
-package com.uninabiogarden.oobd68.dao;
+package org.uninabiogarden.oobd68.dao;
 
-import com.uninabiogarden.oobd68.controller.Controller;
-import com.uninabiogarden.oobd68.entity.Attivita;
-import com.uninabiogarden.oobd68.entity.Categoria;
-import com.uninabiogarden.oobd68.entity.ReportDati;
-import com.uninabiogarden.oobd68.entity.Stato;
+import org.uninabiogarden.oobd68.controller.Controller;
+import org.uninabiogarden.oobd68.entity.Attivita;
+import org.uninabiogarden.oobd68.entity.Categoria;
+import org.uninabiogarden.oobd68.entity.ReportDati;
+import org.uninabiogarden.oobd68.entity.Stato;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,24 +12,18 @@ import java.util.List;
 
 public class AttivitaDAO {
 
-    // Costanti connessione
     private static final String URL = "jdbc:mysql://localhost:3306/unina_biogarden";
     private static final String USER = "root";
-    private static final String PASS = "password";
+    private static final String PASS = "root";
 
-    // AGGIUNTA: Riferimento al com.uninabiogarden.oobd68.controller.com.uninabiogarden.oobd68.controller
     private Controller controller;
 
-    // AGGIUNTA: Costruttore che accetta il com.uninabiogarden.oobd68.controller.com.uninabiogarden.oobd68.controller
     public AttivitaDAO(Controller controller) {
         this.controller = controller;
     }
     public AttivitaDAO(){
     }
 
-    // =================================================================================
-    // 1. IMPOSTA DETTAGLI RACCOLTA
-    // =================================================================================
     public boolean impostaDettagliRaccolta(int idAttivita, double quantitaPrevista) {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
              PreparedStatement ps = conn.prepareStatement("UPDATE Attivita SET quantita_prevista = ? WHERE id_attivita = ?")) {
@@ -41,9 +35,6 @@ public class AttivitaDAO {
         } catch (SQLException e) { return false; }
     }
 
-    // =================================================================================
-    // 2. REGISTRA RACCOLTA
-    // =================================================================================
     public boolean registraRaccolta(int idAttivita, double quantitaEffettiva) {
         String sql = "UPDATE Attivita SET quantita_effettiva = ?, data_fine_effettiva = CURRENT_DATE, tipo_stato = 'COMPLETATO' WHERE id_attivita = ?";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
@@ -56,9 +47,6 @@ public class AttivitaDAO {
         } catch (SQLException e) { return false; }
     }
 
-    // =================================================================================
-    // 3. RECUPERA ATTIVITÀ PER PROGETTO
-    // =================================================================================
     public List<Attivita> recuperaAttivitaPerProgetto(int idColtivazione) {
         List<Attivita> lista = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
@@ -68,9 +56,8 @@ public class AttivitaDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Attivita a = new Attivita(); // Usa il costruttore vuoto
+                Attivita a = new Attivita();
 
-                // Corretto in setIdAttivita (CamelCase standard)
                 a.setidAttivita(rs.getInt("id_attivita"));
                 a.setQuantitaPrevista(rs.getDouble("quantita_prevista"));
                 a.setQuantitaRaccolta(rs.getDouble("quantita_effettiva"));
@@ -89,10 +76,9 @@ public class AttivitaDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return lista;
     }
-    // METODO PER REPORTISTICA
+
     public List<ReportDati> generaReport(int idLotto) {
         List<ReportDati> report = new ArrayList<>();
-        // Query complessa che calcola le statistiche
         String sql = "SELECT c.tipo_ortaggio, COUNT(*) as Tot, AVG(a.quantita_effettiva) as Media, " +
                 "MIN(a.quantita_effettiva) as Min, MAX(a.quantita_effettiva) as Max " +
                 "FROM Attivita a " +

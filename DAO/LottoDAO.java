@@ -1,28 +1,22 @@
-package com.uninabiogarden.oobd68.dao;
+package org.uninabiogarden.oobd68.dao;
 
-import com.uninabiogarden.oobd68.controller.Controller;
-import com.uninabiogarden.oobd68.entity.Coltura;
+import org.uninabiogarden.oobd68.controller.Controller;
+import org.uninabiogarden.oobd68.entity.Coltura;
 
 import java.sql.*;
 
 public class LottoDAO {
 
-    // Costanti connessione
     private static final String URL = "jdbc:mysql://localhost:3306/unina_biogarden";
     private static final String USER = "root";
     private static final String PASS = "password";
 
-    // AGGIUNTA: Riferimento al com.uninabiogarden.oobd68.controller.com.uninabiogarden.oobd68.controller
     private Controller controller;
 
-    // AGGIUNTA: Costruttore che accetta il com.uninabiogarden.oobd68.controller.com.uninabiogarden.oobd68.controller
     public LottoDAO(Controller controller) {
         this.controller = controller;
     }
 
-    // =================================================================================
-    // METODO: isTerrenoAdatto
-    // =================================================================================
     public boolean isTerrenoAdatto(int idLotto, Coltura coltura) {
 
         String sql = "SELECT tipo_terreno FROM Lotto WHERE id_lotto = ?";
@@ -46,14 +40,12 @@ public class LottoDAO {
 
         if (tipoTerrenoDb == null) return false;
 
-        // Recupero il nome dell'ortaggio
         String nomeOrtaggio = coltura.getTipoortaggio();
         if (nomeOrtaggio == null) return false;
 
         nomeOrtaggio = nomeOrtaggio.toLowerCase();
         tipoTerrenoDb = tipoTerrenoDb.toLowerCase();
 
-        // Logica di controllo
         if (nomeOrtaggio.contains("patata") && tipoTerrenoDb.contains("sabbioso")) {
             return true;
         }

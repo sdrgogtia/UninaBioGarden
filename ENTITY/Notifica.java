@@ -1,4 +1,4 @@
-package com.uninabiogarden.oobd68.entity;
+package org.uninabiogarden.oobd68.entity;
 
 import java.util.ArrayList;
 

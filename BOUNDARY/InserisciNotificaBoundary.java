@@ -1,7 +1,7 @@
-package com.uninabiogarden.oobd68.boundary;
+package org.uninabiogarden.oobd68.boundary;
 
-import com.uninabiogarden.oobd68.controller.Controller;
-import com.uninabiogarden.oobd68.entity.Messaggio;
+import org.uninabiogarden.oobd68.controller.Controller;
+import org.uninabiogarden.oobd68.entity.Messaggio;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,34 +24,27 @@ public class InserisciNotificaBoundary extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // --- Pannello Input ---
         JPanel panelInput = new JPanel(new GridLayout(5, 2, 5, 5));
         panelInput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // 1. Lotto
         panelInput.add(new JLabel("ID Lotto Riferimento:"));
         txtIdLotto = new JTextField();
         panelInput.add(txtIdLotto);
 
-        // 2. Tipo
         panelInput.add(new JLabel("Tipo Segnalazione:"));
-        // Assicurati che Messaggio sia un Enum (es. ANOMALIA, ATTIVITA...)
         comboTipo = new JComboBox<>(Messaggio.values());
         panelInput.add(comboTipo);
 
-        // 3. Destinatario
         panelInput.add(new JLabel("Destinatari:"));
         String[] opzioni = {"Tutti i Collaboratori", "Singolo Coltivatore (ID)"};
         comboDestinatario = new JComboBox<>(opzioni);
         panelInput.add(comboDestinatario);
 
-        // 4. ID Singolo
         panelInput.add(new JLabel("ID Coltivatore (se singolo):"));
         txtIdSingolo = new JTextField();
-        txtIdSingolo.setEnabled(false); // Disabilitato all'inizio
+        txtIdSingolo.setEnabled(false);
         panelInput.add(txtIdSingolo);
 
-        // Listener per abilitare il campo ID solo se serve
         comboDestinatario.addActionListener(e -> {
             if (comboDestinatario.getSelectedIndex() == 1) {
                 txtIdSingolo.setEnabled(true);
@@ -65,21 +58,18 @@ public class InserisciNotificaBoundary extends JFrame {
 
         add(panelInput, BorderLayout.NORTH);
 
-        // --- Area Testo ---
         JPanel panelText = new JPanel(new BorderLayout());
         panelText.setBorder(BorderFactory.createTitledBorder("Contenuto Messaggio"));
         txtMessaggio = new JTextArea(5, 20);
         panelText.add(new JScrollPane(txtMessaggio), BorderLayout.CENTER);
 
-        // Aggiungiamo margine ai lati
         JPanel containerText = new JPanel(new BorderLayout());
         containerText.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         containerText.add(panelText, BorderLayout.CENTER);
         add(containerText, BorderLayout.CENTER);
 
-        // --- Bottone Invio ---
         JButton btnInvia = new JButton("INVIA NOTIFICA");
-        btnInvia.setBackground(new Color(255, 140, 0)); // Arancione
+        btnInvia.setBackground(new Color(255, 140, 0));
         btnInvia.setForeground(Color.WHITE);
         btnInvia.setFont(new Font("Arial", Font.BOLD, 14));
 
@@ -88,7 +78,6 @@ public class InserisciNotificaBoundary extends JFrame {
         panelBtn.add(btnInvia, BorderLayout.CENTER);
         add(panelBtn, BorderLayout.SOUTH);
 
-        // --- Azione ---
         btnInvia.addActionListener(e -> inviaNotificaAction());
     }
 
@@ -109,7 +98,7 @@ public class InserisciNotificaBoundary extends JFrame {
 
             Messaggio tipo = (Messaggio) comboTipo.getSelectedItem();
 
-            int idTarget = 0; // 0 = TUTTI
+            int idTarget = 0;
             if (comboDestinatario.getSelectedIndex() == 1) {
                 String idTargetStr = txtIdSingolo.getText().trim();
                 if(idTargetStr.isEmpty()) {
@@ -119,7 +108,6 @@ public class InserisciNotificaBoundary extends JFrame {
                 idTarget = Integer.parseInt(idTargetStr);
             }
 
-            // Chiamata al Controller
             controller.InviaNotificaManuale(testo, tipo, idLotto, idTarget);
 
             JOptionPane.showMessageDialog(this, "Notifica inviata con successo!");

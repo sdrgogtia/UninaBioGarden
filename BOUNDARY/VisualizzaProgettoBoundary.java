@@ -1,8 +1,8 @@
-package com.uninabiogarden.oobd68.boundary;
+package org.uninabiogarden.oobd68.boundary;
 
-import com.uninabiogarden.oobd68.controller.Controller;
-import com.uninabiogarden.oobd68.entity.Attivita;
-import com.uninabiogarden.oobd68.entity.Categoria;
+import org.uninabiogarden.oobd68.controller.Controller;
+import org.uninabiogarden.oobd68.entity.Attivita;
+import org.uninabiogarden.oobd68.entity.Categoria;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,12 +20,11 @@ public class VisualizzaProgettoBoundary extends JFrame {
         this.controller = controller;
 
         setTitle("Stato Progetto - Unina BioGarden");
-        setSize(700, 500); // Finestra più larga per leggere bene le date
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Chiude solo questa finestra
+        setSize(700, 500);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // --- 1. Pannello Ricerca (Nord) ---
         JPanel panelSearch = new JPanel();
         panelSearch.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -34,17 +33,14 @@ public class VisualizzaProgettoBoundary extends JFrame {
         panelSearch.add(txtIdProgetto);
 
         JButton btnCerca = new JButton("VISUALIZZA STATO");
-        btnCerca.setBackground(new Color(100, 150, 255)); // Colore Azzurro
+        btnCerca.setBackground(new Color(100, 150, 255));
         btnCerca.setForeground(Color.WHITE);
         panelSearch.add(btnCerca);
 
         add(panelSearch, BorderLayout.NORTH);
 
-        // --- 2. Tabella Risultati (Centro) ---
-        // Definiamo le colonne della tabella
         String[] colonne = {"ID Attività", "Tipo Operazione", "Stato", "Data Inizio", "Data Fine/Prevista"};
 
-        // Rendiamo le celle della tabella non modificabili dall'utente
         tableModel = new DefaultTableModel(colonne, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -53,10 +49,9 @@ public class VisualizzaProgettoBoundary extends JFrame {
         };
 
         tabella = new JTable(tableModel);
-        tabella.setRowHeight(25); // Righe leggermente più alte per leggibilità
+        tabella.setRowHeight(25);
         add(new JScrollPane(tabella), BorderLayout.CENTER);
 
-        // --- 3. Logica del Bottone Cerca ---
         btnCerca.addActionListener(e -> {
             try {
                 String input = txtIdProgetto.getText().trim();
@@ -67,29 +62,23 @@ public class VisualizzaProgettoBoundary extends JFrame {
 
                 int id = Integer.parseInt(input);
 
-                // CHIAMATA AL CONTROLLER
                 List<Attivita> listaAttivita = controller.RecuperaAttivitaPerProgetto(id);
 
-                // Pulizia della tabella precedente (reset)
                 tableModel.setRowCount(0);
 
                 if (listaAttivita == null || listaAttivita.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Nessuna attività trovata per il progetto ID: " + id);
                 } else {
-                    // Ciclo per popolare le righe della tabella
                     for (Attivita a : listaAttivita) {
 
-                        // Variabili per visualizzare i dati in modo pulito
                         String tipo = "Generico";
                         String dataInizio = "N/D";
                         String dataFine = "N/D";
 
-                        // Controlliamo il tipo di categoria per prendere le date corrette
                         if (a.getTipoCategoria() != null) {
-                            tipo = a.getTipoCategoria().toString(); // Es. SEMINA, RACCOLTA...
+                            tipo = a.getTipoCategoria().toString();
 
                             if (a.getTipoCategoria() == Categoria.SEMINA) {
-                                // Usa i metodi corretti della classe Attivita
                                 dataInizio = String.valueOf(a.getinizioSemina());
                                 dataFine = String.valueOf(a.getfineSemina());
                             } else if (a.getTipoCategoria() == Categoria.RACCOLTA) {
@@ -101,11 +90,10 @@ public class VisualizzaProgettoBoundary extends JFrame {
                             }
                         }
 
-                        // Creazione della riga con i dati
                         Object[] riga = {
-                                a.getidAttivita(),      // Metodo corretto da Attivita.java
+                                a.getidAttivita(),
                                 tipo,
-                                a.getTipoStato(),       // Es. PIANIFICATA, COMPLETATA
+                                a.getTipoStato(),
                                 dataInizio,
                                 dataFine
                         };

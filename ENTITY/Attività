@@ -1,6 +1,6 @@
-package com.uninabiogarden.oobd68.entity;
+package org.uninabiogarden.oobd68.entity;
 
-import com.uninabiogarden.oobd68.dao.AttivitaDAO;
+import org.uninabiogarden.oobd68.dao.AttivitaDAO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -157,7 +157,6 @@ public class Attivita {
         this.finesemina = finesemina;
     }
 
-    // CORRETTO: r -> R (getinizioRaccolta) per matchare la Boundary
     public LocalDateTime getinizioRaccolta() {
         return inizioraccolta;
     }
@@ -178,11 +177,11 @@ public class Attivita {
         if (this.tipoCategoria != Categoria.RACCOLTA) {
             throw new IllegalArgumentException("Errore categoria: " + this.tipoCategoria);
         }
-        // CORRETTO: Controllavo this.quantitaRaccolta invece del parametro passato
+
         if (quantitaPrevista <= 0) {
             throw new IllegalArgumentException("Quantità non valida");
         }
-        this.quantitaPrevista = quantitaPrevista; // CORRETTO: Assegno a quantitaPrevista
+        this.quantitaPrevista = quantitaPrevista;
     }
 
     public void registraRaccolta(double quantitaEffettiva) {
@@ -207,7 +206,6 @@ public class Attivita {
         this.inizioirrigazione = inizioirrigazione;
     }
 
-    // CORRETTO: i -> I (getfineIrrigazione) per matchare la Boundary
     public LocalDateTime getfineIrrigazione() {
         return fineirrigazione;
     }
@@ -228,7 +226,6 @@ public class Attivita {
         return tipoCategoria;
     }
 
-    // CORRETTO: Il parametro era TipoCategoria (maiuscolo) ma assegnavi tipoCategoria (minuscolo)
     public void setTipoCategoria(Categoria tipoCategoria) {
         this.tipoCategoria = tipoCategoria;
     }

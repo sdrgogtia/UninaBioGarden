@@ -1,4 +1,4 @@
-package com.uninabiogarden.oobd68.entity;
+package org.uninabiogarden.oobd68.entity;
 
 import java.util.ArrayList;
 
@@ -104,7 +104,7 @@ public void removecollaboratori (Utente utente) {
     }
 
     public void setIdLotto(int idLotto) {
-        idLotto = idLotto;
+        this.idLotto = idLotto;
     }
 
     public double getSuperficie() {
@@ -112,7 +112,7 @@ public void removecollaboratori (Utente utente) {
     }
 
     public void setSuperficie(double superficie) {
-        superficie = superficie;
+        this.superficie = superficie;
     }
 
     public String getTipoTerreno() {

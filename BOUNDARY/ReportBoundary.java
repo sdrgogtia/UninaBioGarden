@@ -1,6 +1,6 @@
-package com.uninabiogarden.oobd68.boundary;
+package org.uninabiogarden.oobd68.boundary;
 
-import com.uninabiogarden.oobd68.entity.ReportDati;
+import org.uninabiogarden.oobd68.entity.ReportDati;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -21,17 +21,14 @@ public class ReportBoundary extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // 1. Dataset per Grafico e Tabella
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         String[] colonne = {"Coltura", "N. Raccolte", "Media (kg)", "Min (kg)", "Max (kg)"};
         DefaultTableModel tableModel = new DefaultTableModel(colonne, 0);
 
         for (ReportDati d : dati) {
-            // Grafico: Media e Max
             dataset.addValue(d.getMedia(), "Media Raccolto", d.getNomeColtura());
             dataset.addValue(d.getMax(), "Max Raccolto", d.getNomeColtura());
 
-            // Tabella
             Object[] riga = {
                     d.getNomeColtura(),
                     d.getNumeroRaccolte(),
@@ -42,7 +39,6 @@ public class ReportBoundary extends JFrame {
             tableModel.addRow(riga);
         }
 
-        // 2. Creazione Grafico JFreeChart
         JFreeChart barChart = ChartFactory.createBarChart(
                 "Statistiche Raccolta per Coltura",
                 "Tipo di Coltura",
@@ -56,13 +52,11 @@ public class ReportBoundary extends JFrame {
         chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         chartPanel.setBackground(Color.WHITE);
 
-        // 3. Creazione Tabella
         JTable table = new JTable(tableModel);
         JScrollPane tableScroll = new JScrollPane(table);
         tableScroll.setPreferredSize(new Dimension(800, 150));
         tableScroll.setBorder(BorderFactory.createTitledBorder("Dettaglio Numerico"));
 
-        // 4. Aggiunta al Frame
         add(chartPanel, BorderLayout.CENTER);
         add(tableScroll, BorderLayout.SOUTH);
     }

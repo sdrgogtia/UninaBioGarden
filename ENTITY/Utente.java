@@ -1,6 +1,6 @@
-package com.uninabiogarden.oobd68.entity;
+package org.uninabiogarden.oobd68.entity;
 
-import com.uninabiogarden.oobd68.dao.UtenteDAO;
+import org.uninabiogarden.oobd68.dao.UtenteDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Utente {
     private String username;
     private String password;
     private int idUtente;
-    private Persona tipoPersona;
+    public Persona tipoPersona;
 
     public Utente(String nome, String cognome, String username, String password, Persona tipoPersona) {
         this.riceveNotifica=new ArrayList<>();

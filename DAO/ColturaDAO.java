@@ -1,29 +1,23 @@
-package com.uninabiogarden.oobd68.dao;
+package org.uninabiogarden.oobd68.dao;
 
-import com.uninabiogarden.oobd68.controller.Controller;
-import com.uninabiogarden.oobd68.entity.Coltura;
+import org.uninabiogarden.oobd68.controller.Controller;
+import org.uninabiogarden.oobd68.entity.Coltura;
 
 import java.sql.*;
-import java.util.Date; // Necessario per il campo Date
+import java.util.Date; 
 
 public class ColturaDAO {
 
-    // Costanti connessione
     private static final String URL = "jdbc:mysql://localhost:3306/unina_biogarden";
     private static final String USER = "root";
-    private static final String PASS = "password";
+    private static final String PASS = "root";
 
-    // AGGIUNTA: Riferimento al com.uninabiogarden.oobd68.controller.com.uninabiogarden.oobd68.controller
     private Controller controller;
 
-    // AGGIUNTA: Costruttore che accetta il com.uninabiogarden.oobd68.controller.com.uninabiogarden.oobd68.controller
     public ColturaDAO(Controller controller) {
         this.controller = controller;
     }
 
-    // =================================================================================
-    // METODO: getStagioneMigliore
-    // =================================================================================
     public String getStagioneMigliore(int idColtura) {
         String stagioneIdeale = "Non specificata";
 
@@ -36,15 +30,11 @@ public class ColturaDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // 1. Recupero i dati dal database
                     String tipoOrtaggio = rs.getString("tipo_ortaggio");
 
-                    // 2. Recupero la data
                     java.sql.Date dataMaturazioneSql = rs.getDate("tempo_maturazione");
                     Date tempoMaturazione = (dataMaturazioneSql != null) ? new Date(dataMaturazioneSql.getTime()) : null;
 
-                    // 3. Creiamo l'oggetto com.uninabiogarden.oobd68.entity.Coltura temporaneo per usare la sua logica interna
-                    // Nota: Assicurati che il costruttore di com.uninabiogarden.oobd68.entity.Coltura accetti (int, Date, String, double)
                     Coltura c = new Coltura(idColtura, tempoMaturazione, tipoOrtaggio, 0.0);
 
                     stagioneIdeale = c.getStagioneMigliore();

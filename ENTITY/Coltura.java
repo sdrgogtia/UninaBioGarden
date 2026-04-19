@@ -1,4 +1,4 @@
-package com.uninabiogarden.oobd68.entity;
+package org.uninabiogarden.oobd68.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +24,8 @@ public class Coltura {
         this.tipoOrtaggio = tipoOrtaggio;
         this.quantitaOrtaggio = quantitaOrtaggio;
     }
+
+
 
     public ArrayList<ColtivazioneStagionale>getGestisceColtivazioneStagionale() {
         return gestitaColtivazioneStagionale;
@@ -119,7 +121,7 @@ public class Coltura {
     }
 
     public String getTipoortaggio() {
-        return tipoOrtaggio;
+        return this.tipoOrtaggio;
     }
 
     public void setTipoOrtaggio(String tipoortaggio) {
